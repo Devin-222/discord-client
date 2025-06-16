@@ -1,0 +1,93 @@
+.theme-dark {
+  --header-primary: #fb9c04;
+
+  /* Text Colour */
+  --text-normal: #ffffff;
+
+  /* Chat Area Colour */
+  --background-primary: #09090a;
+
+  /* Side Panel Colour */
+  --background-secondary: #171D23;
+
+  /* Server Section & Top Strip */
+  --background-tertiary: #09090a;
+
+  /* Time Messages Were Sent */
+  --text-muted: #fb9c04;
+
+  /* Colour Of Buttons When Hovered Over */
+  --interactive-hover: #3e5165;
+
+  /* Colour Of Channel Names */
+  --channels-default: #fb9c04;
+
+  /* Colour Of Links */
+  --text-link: #00aff4;
+
+  /* Text Box Colour */
+  --channeltextarea-background: #1f2933;
+
+  /* Colour Of Profile Box Next To Text Box */
+  --background-secondary-alt: #1f2933;
+
+  /* Colour Of Buttons */
+  --interactive-normal: #fb9c04;
+  
+  /* Colour Of Scroll Bar (Not The Part You Move) */
+  --scrollbar-auto-track: #2a333c;
+
+  /* Colour Of Scroll Bar (The Part You Move) */
+  --scrollbar-auto-thumb: #fb9c04;
+  
+  /* Nitro Boost Bar Colour */
+  --background-floating: #1f2933;
+  
+  /* Colour Of Bar Indicating What Channel You Are Currently On */
+  --background-modifier-selected: #1f2933;
+
+  /* Colour Of Bar Indicating What Channel You Are Hovering On */
+  --background-modifier-hover: #1b232b;
+
+  /* Colour Of Buttons That Are Currently Active e.g. Members List */
+  --interactive-active: #fb9c04;
+}
+/* Make game/activity text white and not bold */
+[class*="activity"], [class*="activity"] [class*="details"], [class*="activity"] [class*="content"], [class*="activity"] [class*="text"] {
+color: #ffffff !important;
+font-weight: normal !important;
+}
+
+/* Force forum view background to #09090a */
+.container_f369db, .list_f369db, .scrollerBase_998fc, .content_99f8c, .card_f369db {
+background-color: #09090a !important;
+}
+
+/* Forum header area background */
+.title_f75fb0, .forumOrHome__49676, .container__9293f, .themed__9239f {
+background-color: #09090a !important;
+}
+
+/* Force username in profile view to be white */
+.userTagUsername__63ed3 {
+  color: #ffffff !important;
+  font-weight: normal !important;
+}
+
+/* Force the stream button text (inside activity panel) to orange */
+.contents__201d5 svg {
+color: #fb9c04 !important;
+}
+
+/* Colour Of Ping/Mentions */
+.mention {
+background-color: rgba(251, 156, 4, 0.2) !important; /* transparent orange */
+color: #fb9c04 !important; /* keep the text orange */
+padding: 2px 4px;
+}
+
+.barBase__0f481 {
+background-color: #fb9c04 !important;
+color: black !important; /* Makes the "NEW" text stand out */
+font-weight: bold;
+}
