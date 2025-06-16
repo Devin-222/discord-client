@@ -1,93 +1,203 @@
-.theme-dark {
-  --header-primary: #fb9c04;
-
-  /* Text Colour */
-  --text-normal: #ffffff;
-
-  /* Chat Area Colour */
-  --background-primary: #09090a;
-
-  /* Side Panel Colour */
-  --background-secondary: #171D23;
-
-  /* Server Section & Top Strip */
-  --background-tertiary: #09090a;
-
-  /* Time Messages Were Sent */
-  --text-muted: #fb9c04;
-
-  /* Colour Of Buttons When Hovered Over */
-  --interactive-hover: #3e5165;
-
-  /* Colour Of Channel Names */
-  --channels-default: #fb9c04;
-
-  /* Colour Of Links */
-  --text-link: #00aff4;
-
-  /* Text Box Colour */
-  --channeltextarea-background: #1f2933;
-
-  /* Colour Of Profile Box Next To Text Box */
-  --background-secondary-alt: #1f2933;
-
-  /* Colour Of Buttons */
-  --interactive-normal: #fb9c04;
-  
-  /* Colour Of Scroll Bar (Not The Part You Move) */
-  --scrollbar-auto-track: #2a333c;
-
-  /* Colour Of Scroll Bar (The Part You Move) */
-  --scrollbar-auto-thumb: #fb9c04;
-  
-  /* Nitro Boost Bar Colour */
-  --background-floating: #1f2933;
-  
-  /* Colour Of Bar Indicating What Channel You Are Currently On */
-  --background-modifier-selected: #1f2933;
-
-  /* Colour Of Bar Indicating What Channel You Are Hovering On */
-  --background-modifier-hover: #1b232b;
-
-  /* Colour Of Buttons That Are Currently Active e.g. Members List */
-  --interactive-active: #fb9c04;
-}
+/* Side Bar */
+/* ----------------------------------------------------------------------------------------------------------------------------------------------- */
 /* Make game/activity text white and not bold */
 [class*="activity"], [class*="activity"] [class*="details"], [class*="activity"] [class*="content"], [class*="activity"] [class*="text"] {
-color: #ffffff !important;
-font-weight: normal !important;
-}
-
-/* Force forum view background to #09090a */
-.container_f369db, .list_f369db, .scrollerBase_998fc, .content_99f8c, .card_f369db {
-background-color: #09090a !important;
-}
-
-/* Forum header area background */
-.title_f75fb0, .forumOrHome__49676, .container__9293f, .themed__9239f {
-background-color: #09090a !important;
-}
-
-/* Force username in profile view to be white */
-.userTagUsername__63ed3 {
   color: #ffffff !important;
   font-weight: normal !important;
 }
 
-/* Force the stream button text (inside activity panel) to orange */
+/* Force the stream button text (inside activity panel) to #fb9c04 */
 .contents__201d5 svg {
-color: #fb9c04 !important;
+  color: #fb9c04 !important;
 }
 
+/* Member list role headers (like Server Owner, Admin, etc.) */
+[class*="membersGroup"] {
+  color: #fb9c04 !important;
+}
+
+[class*="spriteGreyscale"] {
+  background-color: #fb9c04 !important;
+}
+
+[class*="icon__"] {
+  color: #fb9c04 !important;
+}
+
+/* Force the top-right minimize/maximize/close icons to #fb9c04 */
+[class*="winButton"] svg, [class*="winButton"] svg path {
+  fill: #fb9c04 !important;
+  stroke: #fb9c04 !important;
+  color: #fb9c04 !important;
+}
+
+[class*="gameIcon"] svg path {
+  fill: #fb9c04 !important;
+  stroke: #fb9c04 !important;
+}
+
+/* Make the BOT badge #fb9c04 */
+[class*="botTagRegular"] {
+  background-color: #fb9c04 !important;
+  color: black !important; /* optional: for contrast */
+}
+.botTagVerified__82f07 path {
+  fill: black !important;
+}
+
+/* Chat */
+/* ----------------------------------------------------------------------------------------------------------------------------------------------- */
 /* Colour Of Ping/Mentions */
 .mention {
-background-color: rgba(251, 156, 4, 0.2) !important; /* transparent orange */
-color: #fb9c04 !important; /* keep the text orange */
-padding: 2px 4px;
+  background-color: rgba(251, 156, 4, 0.2) !important;
+  color: #fb9c04 !important;
+  padding: 2px 4px;
 }
 
+/* Colour of new message bar */
 .barBase__0f481 {
-background-color: #fb9c04 !important;
-color: black !important; /* Makes the "NEW" text stand out */
-font-weight: bold;
+  background-color: #fb9c04 !important;
+  color: black !important;
+  font-weight: bold;
+}
+
+/* Only the "Text Channels" header inside sidebar */
+[class*="container__"] h3 [class*="overflow__"] {
+  color: #fb9c04 !important;
+}
+
+/* Changes VC text #fb9c04 */
+[class*="wrapper__260e1"] {
+  color: #fb9c04 !important;
+}
+/* Changes community icon next to server name #fb9c04 */
+svg[class*="flowerStar"] path {
+  fill: #fb9c04 !important;
+}
+
+/* Make message timestamps #fb9c04 */
+[class*="header_"] > span {
+  color: #fb9c04 !important;
+}
+
+/* Only change the color of scroll thumbs */
+[class*="scrollerBase"]::-webkit-scrollbar-thumb {
+  background-color: #fb9c04 !important;
+}
+
+/* Style the VC buttons */
+.lottieIcon__5eb9b svg path {
+  fill: #fb9c04 !important;
+}
+/* Makes dot in VC activity #fb9c04 */
+.dot__148e9 {
+  background-color: #fb9c04 !important;
+}
+
+/* Makes the action icons next to the channels #fb9c04 */
+.actionIcon_c69b6d {
+  color: #fb9c04 !important;
+}
+
+/* Server folders */
+/* ----------------------------------------------------------------------------------------------------------------------------------------------- */
+/* Turn unread dot to #fb9c04 */
+[class*="unread__"], [class*="unreadImportant__"] {
+  background-color: #fb9c04 !important;
+}
+
+/* #fb9c04 unread folder pill indicator */
+[class*="item__58105"] {
+  background-color: #fb9c04 !important;
+}
+
+/* Set the VC server icon to #fb9c04 */
+.iconBadge__650eb {
+  background-color: #fb9c04 !important;
+}
+.icon__2b1f5 {
+  color: black !important;
+}
+
+/* Landing page */
+/* ----------------------------------------------------------------------------------------------------------------------------------------------- */
+/* Selected tab (Online, All, Pending, etc.) */
+[class*="item__"][aria-selected="true"] {
+  background-color: #fb9c04 !important;
+  color: white !important; /* adjust for contrast */
+}
+
+/* Add Friend tab specifically */
+[class*="addFriend"] {
+  background-color: #fb9c04 !important;
+  color: white !important;
+}
+
+/* Force the Friends tab icon to #fb9c04 */
+[class*="linkButtonIcon"] {
+  fill: #fb9c04 !important;
+  color: #fb9c04 !important;
+}
+
+/* Make "All friends" section title #fb9c04 */
+[class*="title__"] {
+  color: #fb9c04 !important;
+}
+
+/* Style the "Active Now" section title */
+[class*="header__"][id*="uid_"] {
+  color: #fb9c04 !important;
+}
+
+
+/* Forums page */
+/* ----------------------------------------------------------------------------------------------------------------------------------------------- */
+/* Make "New Post" button for forums #fb9c04 */
+button.submitButton_d9be46.lookFilled__201d5.colorBrand__201d5 {
+  background-color: #fb9c04 !important;
+  color: white !important;
+  border-color: #fb9c04 !important;
+}
+button.submitButton_d9be46.lookFilled__201d5.colorBrand__201d5 svg path {
+  fill: white !important;
+}
+
+/* Make the Add a Server and discovery icons #fb9c04 */
+.circleIconButton__5bc7e svg path {
+  fill: #fb9c04 !important;
+}
+
+/* Change "Following" button in forums to #fb9c04 */
+.buttonInner__34c2c {
+  color: #fb9c04 !important;
+}
+
+/* Change "React to Post" button in forums to #fb9c04 */
+.icon_f8896c, .reactionBtn_f8896c {
+  color: #fb9c04 !important;
+}
+
+/* Stream Section */
+/* ----------------------------------------------------------------------------------------------------------------------------------------------- */
+/* Change "Stream" button #fb9c04 */
+.streamButton__7f727 {
+  background-color: #fb9c04 !important;
+  color: black !important;
+  font-weight: bold;
+} 
+/* Change stream text #fb9c04 */
+.controlText__9e06a, .defaultColor__4bd52 {
+  color: #fb9c04 !important;
+} 
+
+/* Settings Section */
+/* ----------------------------------------------------------------------------------------------------------------------------------------------- */
+/* Header colours */
+.eyebrow_cf4812 {
+  color: #fb9c04 !important;
+}
+
+/* Log Out button */
+.tabBarItemContainer_c7e907 {
+  color: red !important;
 }
