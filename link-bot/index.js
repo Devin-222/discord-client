@@ -38,7 +38,7 @@ client.on('messageCreate', async (message) => {
     }
 
     // Pokemon GO links
-    if (message.content === '.pg-news') {
+    if (message.content === '.pg-n') {
         await message.channel.send('👉 https://leekduck.com/events/');
     } else if (message.content === '.pg-cp') {
         await message.channel.send('👉 https://pokemon.gameinfo.io/en/tools/evolution-calculator');
