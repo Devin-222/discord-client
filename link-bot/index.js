@@ -97,7 +97,7 @@ const commandLists = {
         '| Minecraft Commands:                   |',
         '+---------------------------------------+',
         '| All Minecraft Commands: |   .cd-mc    |',
-        '| Server Hosting:         |   .gta-ah   |',
+        '| Server Hosting:         |   .mc-ah   |',
         '+---------------------------------------+'
     ]
 };
