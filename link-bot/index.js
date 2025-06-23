@@ -1,12 +1,22 @@
 // Import required packages
 const { Client, GatewayIntentBits } = require('discord.js');
 const dotenv = require('dotenv');
+const express = require('express');
 
 dotenv.config();
 
 // Create a new client instance
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages]
+});
+
+// Optional: Express server for Render FREE Web Service
+const app = express();
+app.get('/', (req, res) => {
+    res.send('Bot is alive!');
+});
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Express server running on port ${process.env.PORT || 3000}`);
 });
 
 // Event: When bot is ready
@@ -16,9 +26,6 @@ client.once('ready', () => {
 
 // Event: When a message is received
 client.on('messageCreate', async (message) => {
-    if (message.author.bot) return;
-
-    client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
     if (message.content === '.cd') {
@@ -33,56 +40,19 @@ client.on('messageCreate', async (message) => {
             'List All Commands - .cd'
         ];
         await message.channel.send('📜 **Available commands:**\n' + commands.join('\n'));
-        return;  // return so no other ifs run
+        return;
     }
 
     // General links
     if (message.content === '.yt') {
         await message.channel.send('👉 https://www.youtube.com/');
-    }
-
-    // GTA 5 links
-    if (message.content === '.gta-sd') {
+    } else if (message.content === '.gta-sd') {
         await message.channel.send('👉 https://gtalens.com/map/street-dealers');
-    }
-
-    // Solo Leveling: Arise links
-    if (message.content === '.sla-c') {
+    } else if (message.content === '.sla-c') {
         await message.channel.send('👉 https://creator.netmarble.com/en');
     } else if (message.content === '.sla-s') {
         await message.channel.send('👉 https://slvshop.netmarble.com/en/event/daily_gift');
-    }
-
-    // Pokemon GO links
-    if (message.content === '.pg-n') {
-        await message.channel.send('👉 https://leekduck.com/events/');
-    } else if (message.content === '.pg-cp') {
-        await message.channel.send('👉 https://pokemon.gameinfo.io/en/tools/evolution-calculator');
-    } else if (message.content === '.pg-db') {
-        await message.channel.send('👉 https://db.pokemongohub.net');
-    }
-});
-
-
-    // General links
-    if (message.content === '.yt') {
-        await message.channel.send('👉 https://www.youtube.com/');
-    }
-
-    // GTA 5 links
-    if (message.content === '.gta-sd') {
-        await message.channel.send('👉 https://gtalens.com/map/street-dealers');
-    }
-
-    // Solo Leveling: Arise links
-    if (message.content === '.sla-c') {
-        await message.channel.send('👉 https://creator.netmarble.com/en');
-    } else if (message.content === '.sla-s') {
-        await message.channel.send('👉 https://slvshop.netmarble.com/en/event/daily_gift');
-    }
-
-    // Pokemon GO links
-    if (message.content === '.pg-n') {
+    } else if (message.content === '.pg-n') {
         await message.channel.send('👉 https://leekduck.com/events/');
     } else if (message.content === '.pg-cp') {
         await message.channel.send('👉 https://pokemon.gameinfo.io/en/tools/evolution-calculator');
