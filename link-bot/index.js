@@ -97,7 +97,7 @@ const commandLists = {
         '| Minecraft Commands:                   |',
         '+---------------------------------------+',
         '| All Minecraft Commands: |   .cd-mc    |',
-        '| Server Hosting:         |   .mc-ah   |',
+        '| Server Hosting:         |   .mc-ah    |',
         '+---------------------------------------+'
     ]
 };
@@ -116,16 +116,16 @@ client.on('messageCreate', async (message) => {
         await message.channel.send('```' + commandLists.all.join('\n') + '```');
         return;
     } else if (message.content === '.cd-gta') {
-        await message.channel.send('```' + commandLists.all.join('\n') + '```');
+        await message.channel.send('```' + commandLists.gta.join('\n') + '```');
         return;
     } else if (message.content === '.cd-sla') {
-        await message.channel.send('```' + commandLists.all.join('\n') + '```');
+        await message.channel.send('```' + commandLists.sla.join('\n') + '```');
         return;
     } else if (message.content === '.cd-pg') {
-        await message.channel.send('```' + commandLists.all.join('\n') + '```');
+        await message.channel.send('```' + commandLists.pg.join('\n') + '```');
         return;
     } else if (message.content === '.cd-mc') {
-        await message.channel.send('```' + commandLists.all.join('\n') + '```');
+        await message.channel.send('```' + commandLists.mc.join('\n') + '```');
         return;
     }
 
