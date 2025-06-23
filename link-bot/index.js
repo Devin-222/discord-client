@@ -21,69 +21,85 @@ app.listen(process.env.PORT || 3000, () => {
 
 // Command listings
 const commandLists = {
-  all: [
-    '',
-    '+--------------------------------------+',
-    '| General Commands:                    |',
-    '+--------------------------------------+',
-    '| List All Commands:     |     .cd     |',
-    '| YouTube:               |     .yt     |',
-    '+--------------------------------------+',
-    '', // spacing
-    '+--------------------------------------+',
-    '| Grand Theft Auto 5 Commands:         |',
-    '+--------------------------------------+',
-    '| All GTA5 Commands:     |   .cd-gta   |',
-    '| Street Dealers:        |   .gta-sd   |',
-    '+--------------------------------------+',
-    '', // spacing
-    '+--------------------------------------+',
-    '| Solo Leveling: Arise Commands:       |',
-    '+--------------------------------------+',
-    '| All SLA Commands:      |   .cd-sla   |',
-    '| Supporter Codes:       |   .sla-c    |',
-    '| Web Shop:              |   .sla-s    |',
-    '+--------------------------------------+',
-    '', // spacing
-    '+--------------------------------------+',
-    '| Pokemon GO Commands:                 |',
-    '+--------------------------------------+',
-    '| Pokemon GO Commands:   |   .cd-pg    |',
-    '| News:                  |   .pg-n     |',
-    '| CP Calculator:         |   .pg-cp    |',
-    '| Database:              |   .pg-db    |',
-    '+--------------------------------------+'
-  ],
-  gta: [
-    '',
-    '+--------------------------------------+',
-    '| Grand Theft Auto 5 Commands:         |',
-    '+--------------------------------------+',
-    '| All GTA5 Commands:     |   .cd-gta   |',
-    '| Street Dealers:        |   .gta-sd   |',
-    '+--------------------------------------+'
-  ],
-  sla: [
-    '',
-    '+--------------------------------------+',
-    '| Solo Leveling: Arise Commands:       |',
-    '+--------------------------------------+',
-    '| All SLA Commands:      |   .cd-sla   |',
-    '| Supporter Codes:       |   .sla-c    |',
-    '| Web Shop:              |   .sla-s    |',
-    '+--------------------------------------+'
-  ],
-  pg: [
-    '',
-    '+--------------------------------------+',
-    '| Pokemon GO Commands:                 |',
-    '+--------------------------------------+',
-    '| Pokemon GO Commands:   |   .cd-pg    |',
-    '| News:                  |   .pg-n     |',
-    '| CP Calculator:         |   .pg-cp    |',
-    '| Database:              |   .pg-db    |',
-    '+--------------------------------------+'
-  ]
+    all: [
+        '', // spacing
+        '+---------------------------------------+',
+        '| General Commands:                     |',
+        '+---------------------------------------+',
+        '| List All Commands:      |     .cd     |',
+        '| YouTube:                |     .yt     |',
+        '+---------------------------------------+',
+        '', // spacing
+        '+---------------------------------------+',
+        '| Pokemon GO Commands:                  |',
+        '+---------------------------------------+',
+        '| Pokemon GO Commands:    |   .cd-pg    |',
+        '| News:                   |   .pg-n     |',
+        '| CP Calculator:          |   .pg-cp    |',
+        '| Database:               |   .pg-db    |',
+        '+---------------------------------------+',
+        '', // spacing
+        '+---------------------------------------+',
+        '| Solo Leveling: Arise Commands:        |',
+        '+---------------------------------------+',
+        '| All SLA Commands:       |   .cd-sla   |',
+        '| Supporter Codes:        |   .sla-c    |',
+        '| Web Shop:               |   .sla-s    |',
+        '+---------------------------------------+',
+        '', // spacing
+        '+---------------------------------------+',
+        '| Grand Theft Auto 5 Commands:          |',
+        '+---------------------------------------+',
+        '| All GTA5 Commands:      |   .cd-gta   |',
+        '| Street Dealers:         |   .gta-sd   |',
+        '+---------------------------------------+',
+        '', // spacing
+        '+---------------------------------------+',
+        '| Minecraft Commands:                   |',
+        '+---------------------------------------+',
+        '| All Minecraft Commands: |   .cd-mc    |',
+        '| Server Hosting:         |   .gta-ah   |',
+        '+---------------------------------------+'
+    ],
+    pg: [
+        '', // spacing
+        '+---------------------------------------+',
+        '| Pokemon GO Commands:                  |',
+        '+---------------------------------------+',
+        '| Pokemon GO Commands:    |   .cd-pg    |',
+        '| News:                   |   .pg-n     |',
+        '| CP Calculator:          |   .pg-cp    |',
+        '| Database:               |   .pg-db    |',
+        '+---------------------------------------+'
+    ],
+    sla: [
+        '', // spacing
+        '+---------------------------------------+',
+        '| Solo Leveling: Arise Commands:        |',
+        '+---------------------------------------+',
+        '| All SLA Commands:       |   .cd-sla   |',
+        '| Supporter Codes:        |   .sla-c    |',
+        '| Web Shop:               |   .sla-s    |',
+        '+---------------------------------------+'
+    ],
+    gta: [
+        '', // spacing
+        '+---------------------------------------+',
+        '| Grand Theft Auto 5 Commands:          |',
+        '+---------------------------------------+',
+        '| All GTA5 Commands:      |   .cd-gta   |',
+        '| Street Dealers:         |   .gta-sd   |',
+        '+---------------------------------------+'
+    ],
+    mc: [
+        '', // spacing
+        '+---------------------------------------+',
+        '| Minecraft Commands:                   |',
+        '+---------------------------------------+',
+        '| All Minecraft Commands: |   .cd-mc    |',
+        '| Server Hosting:         |   .gta-ah   |',
+        '+---------------------------------------+'
+    ]
 };
 
 // Event: When bot is ready
@@ -97,34 +113,25 @@ client.on('messageCreate', async (message) => {
 
     // Command listing handlers
     if (message.content === '.cd') {
-        await message.channel.send('```' + commandLists.all.join('\n') + '```');
+        await message.channel.send(commandLists.all.join('\n'));
         return;
     } else if (message.content === '.cd-gta') {
-        await message.channel.send('```' + commandLists.gta.join('\n') + '```');
+        await message.channel.send(commandLists.all.join('\n'));
         return;
     } else if (message.content === '.cd-sla') {
-        await message.channel.send('```' + commandLists.sla.join('\n') + '```');
+        await message.channel.send(commandLists.all.join('\n'));
         return;
     } else if (message.content === '.cd-pg') {
-        await message.channel.send('```' + commandLists.pg.join('\n') + '```');
+        await message.channel.send(commandLists.all.join('\n'));
+        return;
+    } else if (message.content === '.cd-mc') {
+        await message.channel.send(commandLists.all.join('\n'));
         return;
     }
 
     // General links
     if (message.content === '.yt') {
         await message.channel.send('👉 https://www.youtube.com/');
-    }
-
-    // GTA5 links
-    if (message.content === '.gta-sd') {
-        await message.channel.send('👉 https://gtalens.com/map/street-dealers');
-    }
-
-    // Solo Leveling links
-    if (message.content === '.sla-c') {
-        await message.channel.send('👉 https://creator.netmarble.com/en');
-    } else if (message.content === '.sla-s') {
-        await message.channel.send('👉 https://slvshop.netmarble.com/en/event/daily_gift');
     }
 
     // Pokemon GO links
@@ -134,6 +141,23 @@ client.on('messageCreate', async (message) => {
         await message.channel.send('👉 https://pokemon.gameinfo.io/en/tools/evolution-calculator');
     } else if (message.content === '.pg-db') {
         await message.channel.send('👉 https://db.pokemongohub.net');
+    }
+
+    // Solo Leveling links
+    if (message.content === '.sla-c') {
+        await message.channel.send('👉 https://creator.netmarble.com/en');
+    } else if (message.content === '.sla-s') {
+        await message.channel.send('👉 https://slvshop.netmarble.com/en/event/daily_gift');
+    }
+
+    // GTA5 links
+    if (message.content === '.gta-sd') {
+        await message.channel.send('👉 https://gtalens.com/map/street-dealers');
+    }
+
+    // GTA5 links
+    if (message.content === '.mc-ah') {
+        await message.channel.send('👉 https://panel.apexminecrafthosting.com/site/page/dashboard');
     }
 });
 
