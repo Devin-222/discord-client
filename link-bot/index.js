@@ -113,19 +113,19 @@ client.on('messageCreate', async (message) => {
 
     // Command listing handlers
     if (message.content === '.cd') {
-        await message.channel.send(commandLists.all.join('\n'));
+        await message.channel.send('```' + commandLists.all.join('\n') + '```');
         return;
     } else if (message.content === '.cd-gta') {
-        await message.channel.send(commandLists.all.join('\n'));
+        await message.channel.send('```' + commandLists.all.join('\n') + '```');
         return;
     } else if (message.content === '.cd-sla') {
-        await message.channel.send(commandLists.all.join('\n'));
+        await message.channel.send('```' + commandLists.all.join('\n') + '```');
         return;
     } else if (message.content === '.cd-pg') {
-        await message.channel.send(commandLists.all.join('\n'));
+        await message.channel.send('```' + commandLists.all.join('\n') + '```');
         return;
     } else if (message.content === '.cd-mc') {
-        await message.channel.send(commandLists.all.join('\n'));
+        await message.channel.send('```' + commandLists.all.join('\n') + '```');
         return;
     }
 
