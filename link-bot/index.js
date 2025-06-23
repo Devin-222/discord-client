@@ -18,11 +18,55 @@ client.once('ready', () => {
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
+    client.on('messageCreate', async (message) => {
+    if (message.author.bot) return;
+
+    if (message.content === '.cd') {
+        const commands = [
+            'YouTube - .yt',
+            'GTA5 Street Dealers - .gta-sd',
+            'Solo Leveling: Arise Supporter Codes - .sla-c',
+            'Solo Leveling: Arise Supporter Shop - .sla-s',
+            'Pokemon GO News - .pg-n',
+            'Pokemon GO CP Calculator - .pg-cp',
+            'Pokemon GO Database - .pg-db',
+            'List All Commands - .cd'
+        ];
+        await message.channel.send('📜 **Available commands:**\n' + commands.join('\n'));
+        return;  // return so no other ifs run
+    }
+
     // General links
     if (message.content === '.yt') {
         await message.channel.send('👉 https://www.youtube.com/');
-    } else if (message.content === '.go') {
-        await message.channel.send('👉 https://www.google.com/');
+    }
+
+    // GTA 5 links
+    if (message.content === '.gta-sd') {
+        await message.channel.send('👉 https://gtalens.com/map/street-dealers');
+    }
+
+    // Solo Leveling: Arise links
+    if (message.content === '.sla-c') {
+        await message.channel.send('👉 https://creator.netmarble.com/en');
+    } else if (message.content === '.sla-s') {
+        await message.channel.send('👉 https://slvshop.netmarble.com/en/event/daily_gift');
+    }
+
+    // Pokemon GO links
+    if (message.content === '.pg-n') {
+        await message.channel.send('👉 https://leekduck.com/events/');
+    } else if (message.content === '.pg-cp') {
+        await message.channel.send('👉 https://pokemon.gameinfo.io/en/tools/evolution-calculator');
+    } else if (message.content === '.pg-db') {
+        await message.channel.send('👉 https://db.pokemongohub.net');
+    }
+});
+
+
+    // General links
+    if (message.content === '.yt') {
+        await message.channel.send('👉 https://www.youtube.com/');
     }
 
     // GTA 5 links
