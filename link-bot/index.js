@@ -21,46 +21,6 @@ app.listen(process.env.PORT || 3000, () => {
 
 // Command listings
 const commandLists = {
-    all: [
-        '', // spacing
-        '+---------------------------------------+',
-        '| General Commands:                     |',
-        '+---------------------------------------+',
-        '| List All Commands:      |     .cd     |',
-        '| YouTube:                |     .yt     |',
-        '+---------------------------------------+',
-        '', // spacing
-        '+---------------------------------------+',
-        '| Pokemon GO Commands:                  |',
-        '+---------------------------------------+',
-        '| Pokemon GO Commands:    |   .cd-pg    |',
-        '| News:                   |   .pg-n     |',
-        '| CP Calculator:          |   .pg-cp    |',
-        '| Database:               |   .pg-db    |',
-        '+---------------------------------------+',
-        '', // spacing
-        '+---------------------------------------+',
-        '| Solo Leveling: Arise Commands:        |',
-        '+---------------------------------------+',
-        '| All SLA Commands:       |   .cd-sla   |',
-        '| Supporter Codes:        |   .sla-c    |',
-        '| Web Shop:               |   .sla-s    |',
-        '+---------------------------------------+',
-        '', // spacing
-        '+---------------------------------------+',
-        '| Grand Theft Auto 5 Commands:          |',
-        '+---------------------------------------+',
-        '| All GTA5 Commands:      |   .cd-gta   |',
-        '| Street Dealers:         |   .gta-sd   |',
-        '+---------------------------------------+',
-        '', // spacing
-        '+---------------------------------------+',
-        '| Minecraft Commands:                   |',
-        '+---------------------------------------+',
-        '| All Minecraft Commands: |   .cd-mc    |',
-        '| Server Hosting:         |   .mc-ah    |',
-        '+---------------------------------------+'
-    ],
     pg: [
         '', // spacing
         '+---------------------------------------+',
@@ -101,6 +61,20 @@ const commandLists = {
         '+---------------------------------------+'
     ]
 };
+
+commandLists.all = [
+        '', // spacing
+        '+---------------------------------------+',
+        '| General Commands:                     |',
+        '+---------------------------------------+',
+        '| List All Commands:      |     .cd     |',
+        '| YouTube:                |     .yt     |',
+        '+---------------------------------------+',
+        ...commandLists.pg,
+        ...commandLists.sla,
+        ...commandLists.gta,
+        ...commandLists.mc,
+]
 
 // Event: When bot is ready
 client.once('ready', () => {
