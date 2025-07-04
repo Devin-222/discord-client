@@ -101,16 +101,6 @@ svg[class*="flowerStar"] path {
 
 /* Server folders */
 /* ----------------------------------------------------------------------------------------------------------------------------------------------- */
-/* Turn unread dot to #fb9c04 */
-[class*="unread__"], [class*="unreadImportant__"] {
-  background-color: #fb9c04 !important;
-}
-
-/* #fb9c04 unread folder pill indicator */
-[class*="item__58105"] {
-  background-color: #fb9c04 !important;
-}
-
 /* Set the VC server icon to #fb9c04 */
 .iconBadge__650eb {
   background-color: #fb9c04 !important;
