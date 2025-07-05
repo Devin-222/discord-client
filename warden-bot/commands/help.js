@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,47 +8,26 @@ module.exports = {
   async execute(interaction) {
     const member = interaction.member;
 
-    const allCommands = [
-      {
-        name: '/ban',
-        description: 'Ban a user from the server',
-        permission: PermissionFlagsBits.BanMembers
-      },
-      {
-        name: '/kick',
-        description: 'Kick a user from the server',
-        permission: PermissionFlagsBits.KickMembers
-      },
-      {
-        name: '/purge',
-        description: 'Delete a number of recent messages',
-        permission: PermissionFlagsBits.ManageMessages
-      },
-      {
-        name: '/help',
-        description: 'Show this help message',
-        permission: null
-      }
-    ];
-
-    const availableFields = allCommands
-      .filter(cmd => !cmd.permission || member.permissions.has(cmd.permission))
+    const availableCommands = interaction.client.commands
+      .filter(cmd => {
+        const perms = cmd.data.default_member_permissions;
+        return !perms || member.permissions.has(PermissionFlagsBits[perms]);
+      })
       .map(cmd => ({
-        name: cmd.name,
-        value: cmd.description,
-        inline: false
+        name: `/${cmd.data.name}`,
+        value: cmd.data.description || 'No description provided.',
       }));
 
-    const helpEmbed = new EmbedBuilder()
+    const embed = new EmbedBuilder()
       .setColor('#2EE4D9')
       .setTitle('📋 Available Commands')
       .setDescription('Here are the commands you can use:')
-      .addFields(availableFields)
+      .addFields(availableCommands)
       .setFooter({
         text: 'Warden Bot',
         iconURL: interaction.client.user.displayAvatarURL()
       });
 
-    await interaction.reply({ embeds: [helpEmbed], ephemeral: true });
+    await interaction.reply({ embeds: [embed], ephemeral: true });
   }
 };

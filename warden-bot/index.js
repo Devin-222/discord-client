@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, Events } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, Events, EmbedBuilder } = require('discord.js');
 require('dotenv').config();
 const fs = require('fs');
 
@@ -13,6 +13,7 @@ const client = new Client({
 
 client.commands = new Collection();
 
+// Load all command files
 const commandFiles = fs.readdirSync('./commands');
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
@@ -32,8 +33,23 @@ client.on(Events.InteractionCreate, async interaction => {
     try {
         await command.execute(interaction);
     } catch (error) {
-        console.error(error);
-        await interaction.reply({ content: 'There was an error executing this command.', ephemeral: true });
+        console.error(`❌ Error in command ${interaction.commandName}:`, error);
+
+        const errorEmbed = new EmbedBuilder()
+            .setColor('#FF4444')
+            .setTitle('⚠️ Command Error')
+            .setDescription('Something went wrong while executing this command.')
+            .setFooter({
+                text: 'Warden Bot',
+                iconURL: interaction.client.user.displayAvatarURL()
+            });
+
+        // Safely reply or follow up depending on state
+        if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
+        } else {
+            await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+        }
     }
 });
 
