@@ -2,6 +2,7 @@ const { Client, GatewayIntentBits, Collection, Events, EmbedBuilder } = require(
 require('dotenv').config();
 const fs = require('fs');
 
+// Create client
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -11,19 +12,20 @@ const client = new Client({
     ],
 });
 
+// Load slash commands
 client.commands = new Collection();
-
-// Load all command files
 const commandFiles = fs.readdirSync('./commands');
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.data.name, command);
 }
 
+// Ready event
 client.once(Events.ClientReady, () => {
     console.log(`✅ Warden is online as ${client.user.tag}`);
 });
 
+// Handle slash commands
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
@@ -44,7 +46,6 @@ client.on(Events.InteractionCreate, async interaction => {
                 iconURL: interaction.client.user.displayAvatarURL()
             });
 
-        // Safely reply or follow up depending on state
         if (interaction.replied || interaction.deferred) {
             await interaction.followUp({ embeds: [errorEmbed], ephemeral: true });
         } else {
@@ -53,4 +54,14 @@ client.on(Events.InteractionCreate, async interaction => {
     }
 });
 
+// Log in
 client.login(process.env.TOKEN);
+
+// --- Express server to keep bot alive on Replit/Render ---
+const express = require('express');
+const app = express();
+
+app.get('/', (_, res) => res.send('🟢 Warden is alive!'));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🌐 Keep-alive server running on port ${PORT}`));
