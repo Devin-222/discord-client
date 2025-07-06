@@ -30,22 +30,11 @@ const DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 const TIME_OPTIONS = [
   "Anytime",
   "Not available",
-  "12am",
-  "11:30pm",
-  "11pm",
-  "10:30pm",
-  "10pm",
-  "9:30pm",
-  "9pm",
-  "8:30pm",
-  "8pm",
-  "7:30pm",
-  "7pm",
-  "6:30pm",
-  "6pm"
+  "12am", "11:30pm", "11pm", "10:30pm", "10pm",
+  "9:30pm", "9pm", "8:30pm", "8pm",
+  "7:30pm", "7pm", "6:30pm", "6pm"
 ];
-const tempResults = {};
-
+const tempResults = {}; // userId -> { mode: 'single' | 'full', data: {} }
 const ORANGE = 0xFFA500;
 
 const commands = [
@@ -81,6 +70,7 @@ async function registerCommands() {
   }
 }
 
+// Interaction handler
 client.on(Events.InteractionCreate, async interaction => {
   if (interaction.isChatInputCommand()) {
     const { commandName } = interaction;
@@ -90,10 +80,13 @@ client.on(Events.InteractionCreate, async interaction => {
       const day = interaction.options.getString('day');
 
       await db.ensureUserDefaults(userId);
-      tempResults[userId] = {};
+      tempResults[userId] = {
+        mode: day ? 'single' : 'full',
+        data: {}
+      };
 
       if (day) {
-        tempResults[userId][day] = null;
+        tempResults[userId].data[day] = null;
         await interaction.reply({
           embeds: [
             new EmbedBuilder()
@@ -105,7 +98,7 @@ client.on(Events.InteractionCreate, async interaction => {
             new ActionRowBuilder().addComponents(
               new StringSelectMenuBuilder()
                 .setCustomId(`availability_${userId}_${DAYS.indexOf(day)}`)
-                .setPlaceholder(`Select availability for ${day.toUpperCase()}`)
+                .setPlaceholder(`Select availability for ${day}`)
                 .addOptions(TIME_OPTIONS.map(time => ({ label: time, value: time })))
             )
           ],
@@ -122,11 +115,13 @@ client.on(Events.InteractionCreate, async interaction => {
           ephemeral: true
         });
 
-        await sendDayMenu(interaction, userId, 0); // ✅ Added await
+        sendDayMenu(interaction, userId, 0);
       }
     }
 
     else if (commandName === 'sch') {
+      await interaction.deferReply();
+
       const user = interaction.options.getUser('user');
 
       if (user) {
@@ -140,7 +135,7 @@ client.on(Events.InteractionCreate, async interaction => {
           .setColor(ORANGE)
           .setDescription(DAYS.map(day => `**${day.toUpperCase()}**: ${avail[day]}`).join('\n'));
 
-        await interaction.reply({ embeds: [embed] });
+        await interaction.editReply({ embeds: [embed] });
       } else {
         const userMap = new Map();
 
@@ -153,7 +148,7 @@ client.on(Events.InteractionCreate, async interaction => {
         }
 
         if (userMap.size === 0) {
-          return interaction.reply('No availability data set yet.');
+          return interaction.editReply({ content: 'No availability data set yet.' });
         }
 
         const embed = new EmbedBuilder()
@@ -171,7 +166,7 @@ client.on(Events.InteractionCreate, async interaction => {
           embed.addFields({ name: username, value: weekText });
         }
 
-        await interaction.reply({ embeds: [embed] });
+        await interaction.editReply({ embeds: [embed] });
       }
     }
   }
@@ -185,17 +180,20 @@ client.on(Events.InteractionCreate, async interaction => {
     const dayIndex = Number(dayIndexStr);
     const selectedTime = interaction.values[0];
 
-    if (!tempResults[userId]) tempResults[userId] = {};
-    tempResults[userId][DAYS[dayIndex]] = selectedTime;
+    const session = tempResults[userId];
+    if (!session) return;
+
+    const currentDay = DAYS[dayIndex];
+    session.data[currentDay] = selectedTime;
 
     await interaction.deferUpdate();
 
-    const updatingSingleDay = Object.keys(tempResults[userId]).length === 1 && dayIndex < DAYS.length;
+    const isSingleDay = session.mode === 'single';
 
-    if (updatingSingleDay || dayIndex + 1 >= DAYS.length) {
-      db.saveUserAvailability(userId, tempResults[userId]);
+    if (isSingleDay || dayIndex + 1 >= DAYS.length) {
+      db.saveUserAvailability(userId, session.data);
 
-      const summary = Object.entries(tempResults[userId])
+      const summary = Object.entries(session.data)
         .map(([day, time]) => `**${day.toUpperCase()}**: ${time}`)
         .join('\n');
 
@@ -211,7 +209,7 @@ client.on(Events.InteractionCreate, async interaction => {
         components: []
       });
     } else {
-      await sendDayMenu(interaction, userId, dayIndex + 1); // ✅ Added await
+      sendDayMenu(interaction, userId, dayIndex + 1);
     }
   }
 });
@@ -238,14 +236,13 @@ async function sendDayMenu(interaction, userId, dayIndex) {
   });
 }
 
-// ✅ Express web server for UptimeRobot
+// Start Express server
 const app = express();
 app.get('/', (req, res) => res.send('Schedule bot is running.'));
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Express server listening on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Express server listening on port ${PORT}`));
 
+// Bot ready
 client.once(Events.ClientReady, () => {
   console.log(`🤖 Logged in as ${client.user.tag}`);
   registerCommands();
