@@ -87,14 +87,13 @@ client.on(Events.InteractionCreate, async interaction => {
 
     if (commandName === 'avail') {
       const userId = interaction.user.id;
-      const day = interaction.options.getString('day'); // optional single day
+      const day = interaction.options.getString('day');
 
       await db.ensureUserDefaults(userId);
       tempResults[userId] = {};
 
       if (day) {
-        // Single day update flow
-        tempResults[userId][day] = null; // placeholder
+        tempResults[userId][day] = null;
         await interaction.reply({
           embeds: [
             new EmbedBuilder()
@@ -113,7 +112,6 @@ client.on(Events.InteractionCreate, async interaction => {
           ephemeral: true
         });
       } else {
-        // Full week update flow
         await interaction.reply({
           embeds: [
             new EmbedBuilder()
@@ -124,7 +122,7 @@ client.on(Events.InteractionCreate, async interaction => {
           ephemeral: true
         });
 
-        sendDayMenu(interaction, userId, 0);
+        await sendDayMenu(interaction, userId, 0); // ✅ Added await
       }
     }
 
@@ -132,7 +130,6 @@ client.on(Events.InteractionCreate, async interaction => {
       const user = interaction.options.getUser('user');
 
       if (user) {
-        // Show single user's full week availability
         const avail = {};
         for (const day of DAYS) {
           avail[day] = db.getUserDay(user.id, day);
@@ -145,7 +142,6 @@ client.on(Events.InteractionCreate, async interaction => {
 
         await interaction.reply({ embeds: [embed] });
       } else {
-        // Show availability of all users for full week
         const userMap = new Map();
 
         for (const day of DAYS) {
@@ -194,11 +190,9 @@ client.on(Events.InteractionCreate, async interaction => {
 
     await interaction.deferUpdate();
 
-    // Detect if updating single day (only one day in tempResults) or full week
     const updatingSingleDay = Object.keys(tempResults[userId]).length === 1 && dayIndex < DAYS.length;
 
     if (updatingSingleDay || dayIndex + 1 >= DAYS.length) {
-      // Save gathered availability
       db.saveUserAvailability(userId, tempResults[userId]);
 
       const summary = Object.entries(tempResults[userId])
@@ -217,8 +211,7 @@ client.on(Events.InteractionCreate, async interaction => {
         components: []
       });
     } else {
-      // Continue to next day
-      sendDayMenu(interaction, userId, dayIndex + 1);
+      await sendDayMenu(interaction, userId, dayIndex + 1); // ✅ Added await
     }
   }
 });
@@ -245,13 +238,9 @@ async function sendDayMenu(interaction, userId, dayIndex) {
   });
 }
 
-// Start Express app for uptime monitoring
+// ✅ Express web server for UptimeRobot
 const app = express();
-
-app.get('/', (req, res) => {
-  res.send('Schedule bot is running.');
-});
-
+app.get('/', (req, res) => res.send('Schedule bot is running.'));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Express server listening on port ${PORT}`);
