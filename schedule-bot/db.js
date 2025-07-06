@@ -1,8 +1,14 @@
 const path = require('path');
+const fs = require('fs');
 const Database = require('better-sqlite3');
 
-// Use /data for Render deployment, else local file during development
-const dbPath = process.env.RENDER ? '/data/availability.db' : path.join(__dirname, 'availability.db');
+// Determine database directory and ensure it exists
+const dbDir = process.env.RENDER ? '/data' : __dirname;
+if (process.env.RENDER && !fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
+
+const dbPath = process.env.RENDER ? path.join(dbDir, 'availability.db') : path.join(dbDir, 'availability.db');
 const db = new Database(dbPath);
 
 // Create table if it doesn't exist yet
