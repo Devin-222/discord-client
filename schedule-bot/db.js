@@ -2,16 +2,20 @@ const path = require('path');
 const fs = require('fs');
 const Database = require('better-sqlite3');
 
-// Determine database directory and ensure it exists
-const dbDir = process.env.RENDER ? '/data' : __dirname;
-if (process.env.RENDER && !fs.existsSync(dbDir)) {
+// Use a safe writeable directory
+const isRender = !!process.env.RENDER;
+const dbDir = isRender ? path.join(__dirname, 'data') : __dirname;
+
+// Ensure the directory exists
+if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
 
-const dbPath = process.env.RENDER ? path.join(dbDir, 'availability.db') : path.join(dbDir, 'availability.db');
+// Set DB path
+const dbPath = path.join(dbDir, 'availability.db');
 const db = new Database(dbPath);
 
-// Create table if it doesn't exist yet
+// Create availability table if it doesn't exist
 db.prepare(`
   CREATE TABLE IF NOT EXISTS availability (
     user_id TEXT NOT NULL,
@@ -43,7 +47,7 @@ module.exports = {
 
   getUserDay(userId, day) {
     const row = db.prepare('SELECT time FROM availability WHERE user_id = ? AND day = ?').get(userId, day);
-    return row?.time ?? DEFAULT_TIME; // Return DEFAULT_TIME if not set
+    return row?.time ?? DEFAULT_TIME;
   },
 
   getAllForDay(day) {
@@ -51,7 +55,6 @@ module.exports = {
   },
 
   ensureUserDefaults(userId) {
-    // Check which days are already set for the user
     const existingDays = db.prepare('SELECT day FROM availability WHERE user_id = ?').all(userId).map(r => r.day);
 
     const insert = db.prepare(`
