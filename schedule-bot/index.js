@@ -140,9 +140,6 @@ client.on(Events.InteractionCreate, async interaction => {
         await interaction.reply({ embeds: [embed] });
       } else {
         // Show everyone for full week
-        // Get all users who have availability for any day
-        // We'll build a map userId => {day: time}
-
         const userMap = new Map();
 
         for (const day of DAYS) {
@@ -157,12 +154,10 @@ client.on(Events.InteractionCreate, async interaction => {
           return interaction.reply('No availability data set yet.');
         }
 
-        // Build embed with each user and their full week
         const embed = new EmbedBuilder()
           .setTitle('All Users Availability')
           .setColor(ORANGE);
 
-        // Fetch usernames for all userIds in parallel
         const userIds = Array.from(userMap.keys());
         const users = await Promise.all(userIds.map(uid => client.users.fetch(uid).catch(() => null)));
 
@@ -194,7 +189,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
     await interaction.deferUpdate();
 
-    // Determine if user is updating a single day or whole week
+    // Detect if updating single day (only one day in tempResults) or full week
     const updatingSingleDay = Object.keys(tempResults[userId]).length === 1 && dayIndex < DAYS.length;
 
     if (updatingSingleDay || dayIndex + 1 >= DAYS.length) {
@@ -221,7 +216,6 @@ client.on(Events.InteractionCreate, async interaction => {
     }
   }
 });
-
 
 async function sendDayMenu(interaction, userId, dayIndex) {
   if (dayIndex >= DAYS.length) return;
