@@ -1,4 +1,5 @@
 require('dotenv').config();
+const express = require('express');
 const {
   Client,
   GatewayIntentBits,
@@ -80,43 +81,48 @@ async function registerCommands() {
   }
 }
 
-// Interaction handler
 client.on(Events.InteractionCreate, async interaction => {
   if (interaction.isChatInputCommand()) {
     const { commandName } = interaction;
 
     if (commandName === 'avail') {
       const userId = interaction.user.id;
-      const day = interaction.options.getString('day'); // optional day filter
+      const day = interaction.options.getString('day'); // optional single day
 
       await db.ensureUserDefaults(userId);
-
       tempResults[userId] = {};
 
       if (day) {
         // Single day update flow
         tempResults[userId][day] = null; // placeholder
-        await interaction.reply({ embeds: [
-          new EmbedBuilder()
-            .setTitle(`Update availability for ${day.toUpperCase()}`)
-            .setColor(ORANGE)
-            .setDescription(`Please select your availability for **${day.toUpperCase()}**`)
-        ], components: [
-          new ActionRowBuilder().addComponents(
-            new StringSelectMenuBuilder()
-              .setCustomId(`availability_${userId}_${DAYS.indexOf(day)}`)
-              .setPlaceholder(`Select availability for ${day}`)
-              .addOptions(TIME_OPTIONS.map(time => ({ label: time, value: time })))
-          )
-        ], ephemeral: true });
+        await interaction.reply({
+          embeds: [
+            new EmbedBuilder()
+              .setTitle(`Update availability for ${day.toUpperCase()}`)
+              .setColor(ORANGE)
+              .setDescription(`Please select your availability for **${day.toUpperCase()}**`)
+          ],
+          components: [
+            new ActionRowBuilder().addComponents(
+              new StringSelectMenuBuilder()
+                .setCustomId(`availability_${userId}_${DAYS.indexOf(day)}`)
+                .setPlaceholder(`Select availability for ${day.toUpperCase()}`)
+                .addOptions(TIME_OPTIONS.map(time => ({ label: time, value: time })))
+            )
+          ],
+          ephemeral: true
+        });
       } else {
         // Full week update flow
-        await interaction.reply({ embeds: [
-          new EmbedBuilder()
-            .setTitle('Set your availability for the week')
-            .setColor(ORANGE)
-            .setDescription('Let’s start with Monday.')
-        ], ephemeral: true });
+        await interaction.reply({
+          embeds: [
+            new EmbedBuilder()
+              .setTitle('Set your availability for the week')
+              .setColor(ORANGE)
+              .setDescription('Let’s start with Monday.')
+          ],
+          ephemeral: true
+        });
 
         sendDayMenu(interaction, userId, 0);
       }
@@ -126,7 +132,7 @@ client.on(Events.InteractionCreate, async interaction => {
       const user = interaction.options.getUser('user');
 
       if (user) {
-        // Show single user's full week
+        // Show single user's full week availability
         const avail = {};
         for (const day of DAYS) {
           avail[day] = db.getUserDay(user.id, day);
@@ -139,7 +145,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
         await interaction.reply({ embeds: [embed] });
       } else {
-        // Show everyone for full week
+        // Show availability of all users for full week
         const userMap = new Map();
 
         for (const day of DAYS) {
@@ -166,7 +172,6 @@ client.on(Events.InteractionCreate, async interaction => {
           const userAvail = userMap.get(uid);
           const username = users[i]?.username ?? `Unknown (${uid})`;
           const weekText = DAYS.map(day => `**${day.toUpperCase()}**: ${userAvail[day] ?? 'Not set'}`).join('\n');
-
           embed.addFields({ name: username, value: weekText });
         }
 
@@ -193,7 +198,7 @@ client.on(Events.InteractionCreate, async interaction => {
     const updatingSingleDay = Object.keys(tempResults[userId]).length === 1 && dayIndex < DAYS.length;
 
     if (updatingSingleDay || dayIndex + 1 >= DAYS.length) {
-      // Save all gathered data so far
+      // Save gathered availability
       db.saveUserAvailability(userId, tempResults[userId]);
 
       const summary = Object.entries(tempResults[userId])
@@ -203,10 +208,11 @@ client.on(Events.InteractionCreate, async interaction => {
       delete tempResults[userId];
 
       await interaction.editReply({
-        embeds: [new EmbedBuilder()
-          .setTitle('Availability saved!')
-          .setColor(ORANGE)
-          .setDescription(summary)
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('Availability saved!')
+            .setColor(ORANGE)
+            .setDescription(summary)
         ],
         components: []
       });
@@ -223,7 +229,7 @@ async function sendDayMenu(interaction, userId, dayIndex) {
   const currentDay = DAYS[dayIndex];
   const menu = new StringSelectMenuBuilder()
     .setCustomId(`availability_${userId}_${dayIndex}`)
-    .setPlaceholder(`Select availability for ${currentDay}`)
+    .setPlaceholder(`Select availability for ${currentDay.toUpperCase()}`)
     .addOptions(TIME_OPTIONS.map(time => ({ label: time, value: time })));
 
   const row = new ActionRowBuilder().addComponents(menu);
@@ -238,6 +244,18 @@ async function sendDayMenu(interaction, userId, dayIndex) {
     components: [row],
   });
 }
+
+// Start Express app for uptime monitoring
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Schedule bot is running.');
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Express server listening on port ${PORT}`);
+});
 
 client.once(Events.ClientReady, () => {
   console.log(`🤖 Logged in as ${client.user.tag}`);
