@@ -225,7 +225,7 @@ async function sendDayMenu(interaction, userId, dayIndex) {
 
   const row = new ActionRowBuilder().addComponents(menu);
 
-  await interaction.editReply({
+  await interaction.followUp({
     content: null,
     embeds: [
       new EmbedBuilder()
@@ -233,6 +233,7 @@ async function sendDayMenu(interaction, userId, dayIndex) {
         .setColor(ORANGE)
     ],
     components: [row],
+    ephemeral: true
   });
 }
 
