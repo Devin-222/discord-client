@@ -70,8 +70,8 @@ async function registerCommands() {
   }
 }
 
-// Interaction handler
 client.on(Events.InteractionCreate, async interaction => {
+  // Slash command handler
   if (interaction.isChatInputCommand()) {
     const { commandName } = interaction;
 
@@ -87,6 +87,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
       if (day) {
         tempResults[userId].data[day] = null;
+
         await interaction.reply({
           embeds: [
             new EmbedBuilder()
@@ -171,6 +172,7 @@ client.on(Events.InteractionCreate, async interaction => {
     }
   }
 
+  // Select menu handler
   else if (interaction.isStringSelectMenu()) {
     const [prefix, userId, dayIndexStr] = interaction.customId.split('_');
     if (prefix !== 'availability' || interaction.user.id !== userId) {
@@ -179,7 +181,6 @@ client.on(Events.InteractionCreate, async interaction => {
 
     const dayIndex = Number(dayIndexStr);
     const selectedTime = interaction.values[0];
-
     const session = tempResults[userId];
     if (!session) return;
 
@@ -225,7 +226,6 @@ async function sendDayMenu(interaction, userId, dayIndex) {
 
   const row = new ActionRowBuilder().addComponents(menu);
 
-  // Use editReply to update the same message instead of followUp
   await interaction.editReply({
     content: null,
     embeds: [
@@ -237,59 +237,13 @@ async function sendDayMenu(interaction, userId, dayIndex) {
   });
 }
 
-client.on(Events.InteractionCreate, async interaction => {
-  if (interaction.isStringSelectMenu()) {
-    const [prefix, userId, dayIndexStr] = interaction.customId.split('_');
-    if (prefix !== 'availability' || interaction.user.id !== userId) {
-      return interaction.reply({ content: 'Not authorized for this menu.', ephemeral: true });
-    }
-
-    const dayIndex = Number(dayIndexStr);
-    const selectedTime = interaction.values[0];
-
-    const session = tempResults[userId];
-    if (!session) return;
-
-    const currentDay = DAYS[dayIndex];
-    session.data[currentDay] = selectedTime;
-
-    // Use deferUpdate and then editReply to update the same message
-    await interaction.deferUpdate();
-
-    const isSingleDay = session.mode === 'single';
-
-    if (isSingleDay || dayIndex + 1 >= DAYS.length) {
-      db.saveUserAvailability(userId, session.data);
-
-      const summary = Object.entries(session.data)
-        .map(([day, time]) => `**${day.toUpperCase()}**: ${time}`)
-        .join('\n');
-
-      delete tempResults[userId];
-
-      await interaction.editReply({
-        embeds: [
-          new EmbedBuilder()
-            .setTitle('Availability saved!')
-            .setColor(ORANGE)
-            .setDescription(summary)
-        ],
-        components: []
-      });
-    } else {
-      sendDayMenu(interaction, userId, dayIndex + 1);
-    }
-  }
-});
-
-
-// Start Express server
+// Start Express server (for uptime)
 const app = express();
 app.get('/', (req, res) => res.send('Schedule bot is running.'));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Express server listening on port ${PORT}`));
 
-// Bot ready
+// On bot ready
 client.once(Events.ClientReady, () => {
   console.log(`🤖 Logged in as ${client.user.tag}`);
   registerCommands();
